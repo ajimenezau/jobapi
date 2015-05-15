@@ -1,0 +1,73 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'com.github.johnrengelman.shadow' version '1.2.1'
+    id 'au.com.dius.pact' version '2.1.8'
+    id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.0'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+version = project.hasProperty('app_version') ? app_version : 'local'
+project.ext {
+    schema = project.hasProperty('db_schema') ? db_schema : 'public'
+}
+
+repositories {
+    jcenter()
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile "io.dropwizard:dropwizard-core:${dropwizardVersion}"
+    compile "io.dropwizard:dropwizard-client:${dropwizardVersion}"
+    compile "io.dropwizard:dropwizard-hibernate:${dropwizardVersion}"
+    compile "io.dropwizard:dropwizard-migrations:${dropwizardVersion}"
+    compile "io.dropwizard.modules:dropwizard-java8:${dropwizardJava8Version}"
+    compile "io.dropwizard.modules:dropwizard-java8-auth:${dropwizardJava8Version}"
+
+    compile "de.thomaskrille:dropwizard-template-config:${templateConfigVersion}"
+    compile "com.hubspot.dropwizard:dropwizard-guice:${dropwizardGuiceVersion}"
+    compile("com.netflix.governator:governator:${governatorVersion}") {
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'commons-lang'
+    }
+
+    compile "org.jadira.usertype:usertype.extended:${jadiraVersion}"
+    compile "com.h2database:h2:${h2Version}"
+    compile "org.postgresql:postgresql:${pgVersion}"
+    compile "com.newrelic.agent.java:newrelic-api:${newrelicVersion}"
+    compile("com.wordnik:swagger-jersey2-jaxrs_2.11:${swaggerVersion}") {
+        exclude group: 'org.glassfish.jersey.containers', module: 'jersey-container-servlet-core'
+        exclude group: 'org.glassfish.jersey.core', module: 'jersey-server'
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+
+    compile "org.mongojack:mongojack:${mongojackVersion}"
+
+    testCompile "io.dropwizard:dropwizard-testing:${dropwizardVersion}"
+}
+
+idea {
+    project {
+        //use JDK 1.8 in idea
+        jdkName "1.8"
+        languageLevel "1.8"
+        ipr {
+            withXml { provider ->
+                def node = provider.asNode()
+                //configure git support for the project in idea
+                node.component.find { it.'@name' == 'VcsDirectoryMappings' }?.mapping[0].'@vcs' = 'Git'
+            }
+        }
+    }
+}
+
+apply from: 'gradle/shadow.gradle'
+// optional gradle helper files, remove these if you don't need them.
+// apply from: 'gradle/pact.gradle'
+apply from: 'gradle/migrations.gradle'
+// apply from: 'gradle/bintray.gradle'

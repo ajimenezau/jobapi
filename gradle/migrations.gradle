@@ -1,0 +1,41 @@
+task dbStatus (dependsOn: 'shadowJar') << {
+    javaexec {
+        main = '-jar'
+        args = [ "${buildDir}/${appBaseName}.jar", 'db', 'status', '--schema', schema, config ]
+    }
+}
+
+task dbDump (dependsOn: 'shadowJar') << {
+    javaexec {
+        main = '-jar'
+        args = [ "${buildDir}/${appBaseName}.jar", 'db', 'dump', '--schema', schema, config ]
+    }
+}
+
+task dbMigrate (dependsOn: 'shadowJar') << {
+    javaexec {
+        main = '-jar'
+        args = [ "${buildDir}/${appBaseName}.jar", 'db', 'migrate', '--schema', schema, config ]
+    }
+}
+
+task dbDropAll (dependsOn: 'shadowJar') << {
+    javaexec {
+        main = '-jar'
+        args = [ "${buildDir}/${appBaseName}.jar", 'db', 'drop-all',  '--confirm-delete-everything', '--schema', schema, config ]
+    }
+}
+
+task dbTag (dependsOn: 'shadowJar') << {
+    javaexec {
+        main = '-jar'
+        args = [ "${buildDir}/${appBaseName}.jar", 'db', 'tag', '--schema', schema, config, version ]
+    }
+}
+
+task dbDocs (dependsOn: 'shadowJar') << {
+    javaexec {
+        main = '-jar'
+        args = [ "${buildDir}/${appBaseName}.jar", 'db', 'generate-docs', version, '--schema', schema, config, "${buildDir}/db-docs/" ]
+    }
+}

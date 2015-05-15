@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+    <changeSet author="user (generated)" id="1425535755656-1">
+        <createTable catalogName="H2DB" schemaName="PUBLIC" tableName="JOB">
+            <column name="ID" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MESSAGE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="user (generated)" id="1425535755656-2">
+        <addPrimaryKey catalogName="H2DB" columnNames="ID" constraintName="CONSTRAINT_1" schemaName="PUBLIC" tableName="JOB"/>
+    </changeSet>
+</databaseChangeLog>
